@@ -30,7 +30,7 @@ def q(question: str):
     return output
 
 def json_answer(answer):   
-    return answer["choices"][0]["text"])
+    return answer["choices"][0]["text"]
 
 def main():
     global model
