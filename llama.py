@@ -23,23 +23,25 @@ def q(question: str):
     {question} [/INST]"""
 
     # Model parameters
-    max_tokens = 10000
+    max_tokens = 1000000
 
     # Run the model
-    output = model(prompt, max_tokens=max_tokens, echo=True)
+    output = model(prompt, max_tokens=max_tokens, echo=False, temperature=0.5)
     return output
 
-def print_answer(answer):   
-    print(answer["choices"][0]["text"])
+def json_answer(answer):   
+    return answer["choices"][0]["text"])
 
 def main():
     global model
     load_dotenv()
     model = create_model()
 
-    answer = q("Make a JSON list of 3 fake but realistic persons (with fields: name, age, gender, address, zip)")
+    q1 = "Generate list of 20 top-level categories for marketplace, output in JSON"
+
+    answer = q(q1)
     
-    print_answer(answer)
+    json_answer(answer)
 
 if __name__ == '__main__':
     main()
