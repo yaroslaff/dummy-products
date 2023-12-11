@@ -37,7 +37,7 @@ def main():
     load_dotenv()
     model = create_model()
 
-    answer = q("Make a JSON list of 3 random persons (with fields: name, age, gender, address, zip)")
+    answer = q("Make a JSON list of 3 fake but realistic persons (with fields: name, age, gender, address, zip)")
     
     print_answer(answer)
 
