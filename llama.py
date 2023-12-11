@@ -41,7 +41,7 @@ def main():
 
     answer = q(q1)
     
-    json_answer(answer)
+    print(json_answer(answer))
 
 if __name__ == '__main__':
     main()
