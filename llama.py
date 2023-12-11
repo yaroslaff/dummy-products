@@ -3,6 +3,7 @@
 from llama_cpp import Llama
 import os
 import json
+import sys
 from dotenv import load_dotenv
 
 model = None
@@ -37,7 +38,12 @@ def main():
     load_dotenv()
     model = create_model()
 
-    q1 = "Generate list of 20 top-level categories for marketplace, output in JSON"
+    try:
+        q1 = sys.argv[1]
+    except IndexError:
+        q1 = "Generate list of 100 first names. Give only JSON in answer."
+
+
 
     answer = q(q1)
     
