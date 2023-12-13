@@ -88,6 +88,13 @@ def main():
             print("sysmsg:", sysmsg)
             continue
 
+
+        if question.startswith("!HELP"):
+            print(f"!SYS new system message (current: {sysmsg})")
+            print("!INFO - info")
+            print("!HELP - this help")
+            continue
+
         t = time.time()        
         answer = q(question, system=sysmsg)
         print(f"# time: {time.time() - t:.2f}")
