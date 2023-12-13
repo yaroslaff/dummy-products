@@ -7,6 +7,7 @@ import atexit
 import sys
 import time
 import readline
+import argparse
 from dotenv import load_dotenv
 
 model = None
@@ -29,9 +30,9 @@ def init_readline(path=None):
     atexit.register(readline.write_history_file, path)
 
 
-def q(question: str):
+def q(question: str, system = None):
     # Prompt creation
-    system_message = "You are a helpful assistant"
+    system_message = system or "You are a helpful assistant"
     # system_message = "You are an AI that strictly conforms to responses in JSON formatted strings. Your responses consist ONLY of valid JSON syntax, with no other comments, explainations, reasoninng, or dialogue not consisting of valid JSON."
 
 
@@ -51,9 +52,22 @@ def json_answer(answer):
     return answer["choices"][0]["text"]
 
 
+def get_args():
+    def_sys = os.getenv("LLAMA_SYSMSG", "You are a helpful assistant")
+
+    parser = argparse.ArgumentParser(description='Chat with Llama')
+    parser.add_argument('-s', '--system', default=def_sys, help=f'default system message ({def_sys})')
+
+    return parser.parse_args()
+
+
 def main():
     global model
     load_dotenv()
+    args = get_args()
+
+    sysmsg = args.system
+
     model = create_model()
     init_readline()
 
@@ -62,12 +76,20 @@ def main():
     except IndexError:
         q1 = "Generate list of 100 first names. Give only JSON in answer."
 
-    print("Your first question:\n>>> ")
-
     while True:
         question = input(">>> ")
-        t = time.time()
-        answer = q(question)
+
+        if question.startswith("!SYS"):
+            sysmsg = question[5:]
+            print("new sysmsg:", sysmsg)
+            continue
+
+        if question.startswith("!INFO"):
+            print("sysmsg:", sysmsg)
+            continue
+
+        t = time.time()        
+        answer = q(question, system=sysmsg)
         print(f"# time: {time.time() - t:.2f}")
 
         # print(answer)
